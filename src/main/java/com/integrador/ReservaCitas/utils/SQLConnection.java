@@ -16,18 +16,22 @@ public class SQLConnection {
     private static Connection connection;
     private static final Logger logger = LogManager.getLogger(SQLConnection.class);
 
-    public SQLConnection(){
+    public static Connection createConnection(){
         try {
             Class.forName(DB_JDBC_DRIVER);
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             logger.info("Conexión exitosa con la base de datos");
+            return connection;
         }catch (Exception e){
             logger.error("Error al conectar la base de datos", e);
         }
+        return null;
     }
 
     public static Connection getConnection() {
-        return connection;
+        if(connection == null)
+            return createConnection();
+        else return connection;
     }
 
     public static void closeConnection() throws SQLException {

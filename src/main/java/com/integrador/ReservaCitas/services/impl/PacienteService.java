@@ -1,25 +1,24 @@
-package com.integrador.ReservaCitas.daos.impl;
+package com.integrador.ReservaCitas.services.impl;
 
-import com.integrador.ReservaCitas.daos.IDao;
-import com.integrador.ReservaCitas.models.Odontologo;
 import com.integrador.ReservaCitas.models.Paciente;
+import com.integrador.ReservaCitas.services.IService;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class PacienteDaoH2 implements IDao<Paciente> {
+public class PacienteService implements IService<Paciente> {
     @Override
     public Paciente guardar(Paciente paciente) throws Exception {
         return null;
     }
 
     @Override
-    public void eliminar(String matricula) throws Exception{
+    public void eliminar(String id) throws Exception{
 
     }
 
     @Override
-    public Paciente buscar(String matricula) throws Exception {
+    public Paciente buscar(String id) throws Exception {
         return null;
     }
 

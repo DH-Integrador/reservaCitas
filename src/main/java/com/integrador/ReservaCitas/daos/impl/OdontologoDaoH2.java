@@ -7,48 +7,56 @@ import com.integrador.ReservaCitas.utils.SQLConnection;
 import com.integrador.ReservaCitas.utils.SQLQueries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     private OdontologoDaoH2 odontologoDaoH2;
     private List<Odontologo> odontologosRepositorio = new ArrayList<>();
     private static final Logger logger = LogManager.getLogger(OdontologoDaoH2.class);
+    private Connection connection;
 
-    public OdontologoDaoH2(OdontologoDaoH2 odontologoDaoH2) {
-        this.odontologoDaoH2 = odontologoDaoH2;
+
+    public OdontologoDaoH2() {
+        connection = SQLConnection.getConnection();
     }
 
     @Override
     public Odontologo guardar(Odontologo odontologo) throws Exception {
-        try(PreparedStatement statement = SQLConnection.getConnection().prepareStatement(SQLQueries.INSERT_CUSTOM)){
-            SQLConnection.getConnection().setAutoCommit(false);
-            statement.setString(1, odontologo.getMatricula());
-            statement.setString(2, odontologo.getNombre());
-            statement.setString(3, odontologo.getApellido());
-            statement.execute();
-            SQLConnection.getConnection().commit();
-            logger.info("Se guardó el odontólogo con matrícula: " + odontologo.getMatricula());
-        } catch(Exception e){
-            SQLConnection.getConnection().rollback();
-            logger.error("No se pudo persistir: " + odontologo, e);
-            throw new Exception("Sucedió un error al persistir");
+        try {
+            connection.setAutoCommit(false);
+            try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERT_CUSTOM)){
+                statement.setString(1, odontologo.getMatricula());
+                statement.setString(2, odontologo.getNombre());
+                statement.setString(3, odontologo.getApellido());
+                statement.execute();
+                connection.commit();
+                logger.info("Se guardó el odontólogo con matrícula: " + odontologo.getMatricula());
+            } catch(Exception e){
+                connection.rollback();
+                logger.error("No se pudo persistir: " + odontologo, e);
+                throw new Exception("Sucedió un error al persistir", e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } finally {
+            if(connection != null){
+                connection.setAutoCommit(true);
+            }
         }
-        SQLConnection.getConnection().setAutoCommit(true);
         return odontologo;
     }
 
     @Override
-    public void eliminar(String matricula) {
+    public void eliminar(String matricula) throws Exception{
         try {
             if (buscar(matricula) != null) {
-                try (PreparedStatement statement = SQLConnection.getConnection().prepareStatement(SQLQueries.DELETE)) {
+                try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE)) {
                     statement.setString(1, matricula);
                     statement.executeUpdate();
                     logger.info("Odontólogo con matrícula " + matricula + " eliminado correctamente.");
@@ -65,7 +73,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public Odontologo buscar(String matricula) throws Exception {
-        try(PreparedStatement statement = SQLConnection.getConnection().prepareStatement(SQLQueries.SELECT)){
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT)){
             statement.setString(1, matricula);
             ResultSet resultSet = statement.executeQuery();
             resultSet.last();
@@ -85,8 +93,9 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public List<Odontologo> buscarTodos() throws SQLException {
-        Statement statement = SQLConnection.getConnection().createStatement();
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(SQLQueries.SELECT_ALL);
+        odontologosRepositorio.clear();
         while(resultSet.next()){
             Odontologo odontologo = new Odontologo();
             odontologo.setMatricula(resultSet.getString("MATRICULA"));
@@ -95,5 +104,28 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
             odontologosRepositorio.add(odontologo);
         }
         return odontologosRepositorio;
+    }
+
+    @Override
+    public Odontologo actualizar(Odontologo odontologo) throws Exception {
+        try {
+            connection.setAutoCommit(false);
+            try(PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATE_CUSTOM)){
+                statement.setString(1, odontologo.getNombre());
+                statement.setString(2, odontologo.getMatricula());
+                statement.executeUpdate();
+                connection.commit();
+                logger.info("Se actualizó el odontólogo con matrícula: " + odontologo.getMatricula());
+            } catch (Exception e){
+                connection.rollback();
+                logger.error("No se pudo actualizar: " + odontologo, e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } finally {
+            if(connection != null)
+                connection.setAutoCommit(true);
+        }
+        return odontologo;
     }
 }

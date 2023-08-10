@@ -1,9 +1,11 @@
-package com.integrador.ReservaCitas.daos;
+package com.integrador.ReservaCitas.services;
+
+import com.integrador.ReservaCitas.models.Odontologo;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IDao<T>{
+public interface IService<T> {
     public abstract T guardar(T t) throws Exception;
     public abstract void eliminar(String id) throws Exception;
     public abstract T actualizar(T t) throws Exception;
