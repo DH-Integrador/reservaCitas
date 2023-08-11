@@ -1,7 +1,5 @@
 package com.integrador.ReservaCitas.services;
 
-import com.integrador.ReservaCitas.models.Odontologo;
-
 import java.sql.SQLException;
 import java.util.List;
 

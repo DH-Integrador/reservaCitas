@@ -1,0 +1,5 @@
+2023-08-11 13:55:05 INFO  SQLConnection:22 - Conexión exitosa con la base de datos
+2023-08-11 13:55:05 INFO  ReservaCitasApplication:21 - Se realizó la creación de tablas en la base de datos
+2023-08-11 13:55:43 INFO  OdontologoDaoH2:38 - Se guardó el odontólogo con matrícula: 123
+2023-08-11 13:56:54 INFO  SQLConnection:22 - Conexión exitosa con la base de datos
+2023-08-11 13:56:54 INFO  ReservaCitasApplication:21 - Se realizó la creación de tablas en la base de datos

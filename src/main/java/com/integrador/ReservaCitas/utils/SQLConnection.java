@@ -1,7 +1,6 @@
 package com.integrador.ReservaCitas.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +13,7 @@ public class SQLConnection {
     private final static String DB_USER ="sa";
     private final static String DB_PASSWORD = "";
     private static Connection connection;
-    private static final Logger logger = LogManager.getLogger(SQLConnection.class);
+    private static final Logger logger = Logger.getLogger(SQLConnection.class);
 
     public static Connection createConnection(){
         try {

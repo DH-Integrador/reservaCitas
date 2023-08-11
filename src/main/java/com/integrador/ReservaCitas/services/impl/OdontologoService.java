@@ -3,8 +3,7 @@ package com.integrador.ReservaCitas.services.impl;
 import com.integrador.ReservaCitas.daos.IDao;
 import com.integrador.ReservaCitas.models.Odontologo;
 import com.integrador.ReservaCitas.services.IService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Service
 public class OdontologoService implements IService<Odontologo> {
     private IDao<Odontologo> odontologoIDao;
-    private static final Logger logger = LogManager.getLogger(OdontologoService.class);
+    private static final Logger logger = Logger.getLogger(OdontologoService.class);
 
     public OdontologoService() {
     }

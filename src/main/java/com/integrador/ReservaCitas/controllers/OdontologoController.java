@@ -2,8 +2,7 @@ package com.integrador.ReservaCitas.controllers;
 
 import com.integrador.ReservaCitas.models.Odontologo;
 import com.integrador.ReservaCitas.services.impl.OdontologoService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class OdontologoController {
 
     private final OdontologoService odontologoService;
-    private static final Logger logger = LogManager.getLogger(OdontologoController.class);
+    private static final Logger logger = Logger.getLogger(OdontologoController.class);
 
     @Autowired
     public OdontologoController(OdontologoService odontologoService) {

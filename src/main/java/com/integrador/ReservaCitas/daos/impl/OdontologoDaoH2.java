@@ -5,8 +5,7 @@ import com.integrador.ReservaCitas.models.Odontologo;
 
 import com.integrador.ReservaCitas.utils.SQLConnection;
 import com.integrador.ReservaCitas.utils.SQLQueries;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -18,7 +17,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     private OdontologoDaoH2 odontologoDaoH2;
     private List<Odontologo> odontologosRepositorio = new ArrayList<>();
-    private static final Logger logger = LogManager.getLogger(OdontologoDaoH2.class);
+    private static final Logger logger = Logger.getLogger(OdontologoDaoH2.class);
     private Connection connection;
 
 
