@@ -25,44 +25,62 @@ public class OdontologoService implements IService<Odontologo> {
 
     @Override
     public Odontologo guardar(Odontologo odontologo) throws Exception {
-        Odontologo odontologoGuardado = null;
         try{
-            odontologoGuardado = odontologoIDao.guardar(odontologo);
-        } catch(Exception ignored){}
-        return odontologoGuardado;
+            Odontologo odontologoGuardado = odontologoIDao.guardar(odontologo);
+            logger.info("Odontólogo con matrícula " + odontologo.getMatricula() + " creado correctamente");
+            return odontologoGuardado;
+        } catch(Exception e){
+            logger.error("Error al guardar el odontólogo: " + odontologo, e);
+            throw  new RuntimeException("Error al guardar el odontólogo", e);
+        }
     }
     @Override
     public void eliminar(String matricula){
         try{
             odontologoIDao.eliminar(matricula);
-        } catch(Exception ignored){}
+            logger.info("Odontólogo con matrícula " + matricula + " eliminado correctamente");
+        } catch(Exception e){
+            logger.error("Error al eliminar el odontólogo con matrícula: " + matricula, e);
+            throw new RuntimeException("Error al eliminar el odontólogo", e);
+        }
     }
 
     @Override
     public Odontologo buscar(String matricula) throws Exception {
-        Odontologo odontologoEncontrado = null;
         try{
-            odontologoEncontrado = odontologoIDao.buscar(matricula);
-        } catch(Exception ignored){}
-        return odontologoEncontrado;
+            Odontologo odontologoBuscado = odontologoIDao.buscar(matricula);
+            if(odontologoBuscado == null)
+                throw new RuntimeException("No se encontró el odontólogo con matrícula: " + matricula);
+            return odontologoBuscado;
+        } catch(Exception e){
+            logger.error("No se pudo encontrar el odontólogo con matrícula: " + matricula, e);
+            throw new RuntimeException("Error al buscar el odontólogo", e);
+        }
     }
 
     @Override
     public List<Odontologo> buscarTodos() throws SQLException {
-        List<Odontologo> odontologos = null;
         try{
-            odontologos = odontologoIDao.buscarTodos();
-        } catch (Exception ignored){}
-        return odontologos;
+            List<Odontologo> odontologos = odontologoIDao.buscarTodos();
+            if(odontologos.isEmpty())
+                logger.error("No se encontraron odontólogos");
+            return odontologos;
+        } catch (Exception e){
+            logger.error("Error al buscar todos los odontólogos", e);
+            throw new RuntimeException("Error al buscar todos los odontólogos", e);
+        }
     }
 
     @Override
     public Odontologo actualizar(Odontologo odontologo) throws Exception {
-        Odontologo odontologoActualizado = null;
         try {
-            odontologoActualizado = odontologoIDao.actualizar(odontologo);
-        } catch (Exception ignored) {
+            Odontologo odontologoActualizado = odontologoIDao.actualizar(odontologo);
+            logger.info("Se actualizó el odontólogo con matrícula: " + odontologo.getMatricula());
+            return odontologoActualizado;
+        } catch (Exception e) {
+            logger.error("No se pudo actualizar: " + odontologo, e);
+            throw new RuntimeException("No se pudo actualizar el odontólogo", e);
         }
-        return odontologoActualizado;
+
     }
 }

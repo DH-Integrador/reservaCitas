@@ -4,10 +4,13 @@ import com.integrador.ReservaCitas.models.Odontologo;
 import com.integrador.ReservaCitas.services.impl.OdontologoService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 public class OdontologoController {
@@ -21,53 +24,79 @@ public class OdontologoController {
     }
 
     @GetMapping("/odontologos")
-    public List<Odontologo> getOdontologos() throws SQLException {
-        return odontologoService.buscarTodos();
+    public ResponseEntity<?> getOdontologos() {
+        List<Odontologo> result;
+        try {
+            List<Odontologo> odontologos = odontologoService.buscarTodos();
+            if (odontologos.isEmpty()) {
+                logger.error("No se encontraron odontólogos");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron odontólogos");
+            }
+            return ResponseEntity.ok(odontologos);
+        } catch (Exception e) {
+            logger.error("Error al buscar todos los odontólogos", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener los odontólogos");
+        }
     }
 
     @PostMapping("/register")
-    public Odontologo guardar(@RequestBody Odontologo odontologo) throws Exception {
-        Odontologo odontologoGuardado = null;
+    public ResponseEntity<?> guardar(@RequestBody Odontologo odontologo) {
         try{
-           odontologoGuardado = odontologoService.guardar(odontologo);
+            Odontologo odontologoGuardado = odontologoService.guardar(odontologo);
+            logger.info("Odontólogo con matrícula: " + odontologoGuardado.getMatricula() + " guardado correctamente");
+            return ResponseEntity.status(HttpStatus.OK).body("Se ha guardado el odontólogo: "+ odontologoGuardado);
         }catch(Exception e){
             logger.error("Error al guardar el Odontólogo: " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el odontólogo");
         }
-        return odontologoGuardado;
     }
 
     @GetMapping("/odontologos/{matricula}")
-    public Odontologo getOdontologoByMatricula(@PathVariable String matricula) throws Exception {
-        Odontologo odontologoEncontrado = null;
+    public ResponseEntity<?> getOdontologoByMatricula(@PathVariable String matricula) throws Exception {
         try {
-            odontologoEncontrado = odontologoService.buscar(matricula);
+            Odontologo odontologoEncontrado = odontologoService.buscar(matricula);
+            if(odontologoEncontrado == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el odontólogo con matrícula: " + matricula);
+            return ResponseEntity.ok(odontologoEncontrado);
         } catch (Exception e){
             logger.error("Error al obtener el Odontólogo con la matrícula: " + matricula + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener el odontólogo");
         }
-        return odontologoEncontrado;
     }
 
     @PutMapping("/odontologos/{matricula}")
-    public Odontologo actualizarOdontologo(@PathVariable String matricula, @RequestBody Odontologo odontologo){
-        Odontologo odontologoActualizado = null;
+    public ResponseEntity<?> actualizarOdontologo(@PathVariable String matricula, @RequestBody Odontologo odontologo) throws Exception{
         try {
             Odontologo odontologoExistente = odontologoService.buscar(matricula);
             if(odontologoExistente != null) {
                 odontologo.setMatricula(matricula);
-                odontologoActualizado = odontologoService.actualizar(odontologo);
+                Odontologo odontologoActualizado = odontologoService.actualizar(odontologo);
+                logger.info("Odontólogo con matrícula: " + odontologoActualizado.getMatricula() + " actualizado correctamente");
+                return ResponseEntity.status(HttpStatus.OK).body("Se ha actualizado el odontólogo: "+ odontologoActualizado);
+            } else {
+                logger.error("No se encontró el Odontólogo con la matrícula: " + matricula);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener el odontólogo");
             }
         } catch (Exception e){
             logger.error("Error al actualizar el Odontólogo: " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el odontólogo");
         }
-        return odontologoActualizado;
     }
 
     @DeleteMapping("/odontologos/{matricula}")
-    public void eliminarOdontologo(@PathVariable String matricula){
+    public ResponseEntity<String> eliminarOdontologo(@PathVariable String matricula) throws Exception{
         try{
             odontologoService.eliminar(matricula);
-        } catch(Exception e){
-            logger.error("Error al eliminar el Odontólogo con la matrícula: " + matricula + e);
+            logger.info("Odontólogo con matrícula " + matricula + " eliminado correctamente");
+            return ResponseEntity.ok("Odontólogo con matrícula " + matricula + " eliminado correctamente");
+        } catch (Exception e) {
+            if (e.getMessage() != null) {
+                logger.error("Error al eliminar el Odontólogo con la matrícula: " + matricula + e);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el Odontólogo con matrícula: " + matricula);
+            } else {
+                logger.error("Error al eliminar el Odontólogo con la matrícula: " + matricula, e);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el Odontólogo");
+            }
         }
     }
 }
