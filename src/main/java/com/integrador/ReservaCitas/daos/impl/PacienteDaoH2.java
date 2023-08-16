@@ -1,11 +1,17 @@
 package com.integrador.ReservaCitas.daos.impl;
 
 import com.integrador.ReservaCitas.daos.IDao;
-import com.integrador.ReservaCitas.models.Odontologo;
 import com.integrador.ReservaCitas.models.Paciente;
+import com.integrador.ReservaCitas.utils.SQLConnection;
+import com.integrador.ReservaCitas.utils.SQLQueries;
+import org.apache.log4j.Logger;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class PacienteDaoH2 implements IDao<Paciente> {
     private PacienteDaoH2 pacienteDaoH2;
@@ -24,11 +30,10 @@ public class PacienteDaoH2 implements IDao<Paciente> {
         statement.setString(1, paciente.getDni());
         statement.setString(2, paciente.getNombre());
         statement.setString(3, paciente.getApellido());
-        statement.setDate(4,paciente.getFechaAlta());
         statement.setString(5, paciente.getDomicilio());
         statement.execute();
         connection.commit();
-        logger.info("Se guardó el Paciente : " + paciente.getNombre + paciente.getApellido());
+        logger.info("Se guardó el Paciente : " + paciente.getNombre() + paciente.getApellido());
     } catch(Exception e){
         connection.rollback();
         logger.error("No se pudo persistir: " + paciente, e);
@@ -41,21 +46,21 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public void eliminar(String Dni) throws Exception{
-        try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE)) {
-        statement.setString(1, Dni);
-        int rowsAffected = statement.executeUpdate();
-        if(rowsAffected > 0)
-            logger.info("Paciente con Dni " + Dni + " eliminado correctamente.");
-        else {
-            logger.info("No existe ningún Paciente con Dni: " +  Dni);
-            throw new RuntimeException("No se pudo encontrar el Paciente");
+        try {
+            try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE)) {
+            statement.setString(1, Dni);
+            int rowsAffected = statement.executeUpdate();
+            if(rowsAffected > 0)
+                logger.info("Paciente con Dni " + Dni + " eliminado correctamente.");
+            else {
+                logger.info("No existe ningún Paciente con Dni: " +  Dni);
+                throw new RuntimeException("No se pudo encontrar el Paciente");
+                }
+            }
+        } catch (Exception e){
+            logger.error("Error al eliminar el Paciente con Dni: " + Dni);
+            throw new RuntimeException("Error al eliminar el Paciente ", e);
         }
-    }
-    } catch (Exception e) {
-        logger.error("Error al eliminar el Paciente con Dni: " + Dni);
-        throw new RuntimeException("Error al eliminar el Paciente ", e);
-    }
-
     }
 
     @Override
