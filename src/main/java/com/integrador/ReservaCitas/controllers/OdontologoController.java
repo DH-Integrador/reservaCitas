@@ -13,6 +13,7 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
+@RequestMapping("odontologos")
 public class OdontologoController {
 
     private final OdontologoService odontologoService;
@@ -23,7 +24,7 @@ public class OdontologoController {
         this.odontologoService = odontologoService;
     }
 
-    @GetMapping("/odontologos")
+    @GetMapping
     public ResponseEntity<?> getOdontologos() {
         List<Odontologo> result;
         try {
@@ -51,20 +52,23 @@ public class OdontologoController {
         }
     }
 
-    @GetMapping("/odontologos/{matricula}")
+    @GetMapping("{matricula}")
     public ResponseEntity<?> getOdontologoByMatricula(@PathVariable String matricula) throws Exception {
         try {
             Odontologo odontologoEncontrado = odontologoService.buscar(matricula);
-            if(odontologoEncontrado == null)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el odontólogo con matrícula: " + matricula);
             return ResponseEntity.ok(odontologoEncontrado);
         } catch (Exception e){
-            logger.error("Error al obtener el Odontólogo con la matrícula: " + matricula + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener el odontólogo");
+            if (e.getMessage() != null) {
+                logger.error("Error al buscar el Odontólogo con la matrícula: " + matricula + e);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el Odontólogo con matrícula: " + matricula);
+            } else {
+                logger.error("Error al eliminar el Odontólogo con la matrícula: " + matricula, e);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar el Odontólogo");
+            }
         }
     }
 
-    @PutMapping("/odontologos/{matricula}")
+    @PutMapping("{matricula}")
     public ResponseEntity<?> actualizarOdontologo(@PathVariable String matricula, @RequestBody Odontologo odontologo) throws Exception{
         try {
             Odontologo odontologoExistente = odontologoService.buscar(matricula);
@@ -83,7 +87,7 @@ public class OdontologoController {
         }
     }
 
-    @DeleteMapping("/odontologos/{matricula}")
+    @DeleteMapping("{matricula}")
     public ResponseEntity<String> eliminarOdontologo(@PathVariable String matricula) throws Exception{
         try{
             odontologoService.eliminar(matricula);
