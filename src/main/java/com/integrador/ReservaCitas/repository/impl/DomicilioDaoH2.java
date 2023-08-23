@@ -28,16 +28,18 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
 
     @Override
     public Domicilio guardar(Domicilio domicilio) throws Exception {
-        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERTCUSTOM_DOMICILIO)){
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERTCUSTOM_DOMICILIO, PreparedStatement.RETURN_GENERATED_KEYS)){
             connection.setAutoCommit(false);
-            statement.setInt(1, domicilio.getId());
-            statement.setString(2, domicilio.getCalle());
-            statement.setString(3, domicilio.getNumero());
-            statement.setString(4, domicilio.getLocalidad());
-            statement.setString(5, domicilio.getProvincia());
+            statement.setString(1, domicilio.getCalle());
+            statement.setString(2, domicilio.getNumero());
+            statement.setString(3, domicilio.getLocalidad());
+            statement.setString(4, domicilio.getProvincia());
             statement.execute();
+            ResultSet keys = statement.getGeneratedKeys();
+            if(keys.next())
+                domicilio.setId(keys.getInt(1));
             connection.commit();
-            logger.info("Se guardó el domicilio: " + domicilio.getCalle() + domicilio.getNumero());
+            logger.info("Se guardó el domicilio: " + domicilio.getId());
         } catch(Exception e){
             connection.rollback();
             logger.error("No se pudo persistir: " + domicilio, e);
@@ -66,7 +68,6 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             resultSet.last();
             if(resultSet.getRow()==1){
                 Domicilio domicilio = new Domicilio();
-                domicilio.setId(resultSet.getInt("id"));
                 domicilio.setCalle(resultSet.getString("calle"));
                 domicilio.setNumero(resultSet.getString("numero"));
                 domicilio.setLocalidad(resultSet.getString("localidad"));

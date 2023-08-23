@@ -1,26 +1,16 @@
 package com.integrador.ReservaCitas.dto;
 
 public class DomicilioDto {
-    private int id;
     private String calle;
     private String numero;
     private String localidad;
     private String provincia;
 
-    public DomicilioDto(int id, String calle, String numero, String localidad, String provincia) {
-        this.id = id;
+    public DomicilioDto(String calle, String numero, String localidad, String provincia) {
         this.calle = calle;
         this.numero = numero;
         this.localidad = localidad;
         this.provincia = provincia;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getCalle() {
@@ -58,7 +48,6 @@ public class DomicilioDto {
     @Override
     public String toString() {
         return "DomicilioDto{" +
-                "id=" + id + '\'' +
                 "calle='" + calle + '\'' +
                 ", numero='" + numero + '\'' +
                 ", localidad='" + localidad + '\'' +
