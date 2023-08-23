@@ -8,10 +8,7 @@ import com.integrador.ReservaCitas.util.SQLQueries;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,9 +31,12 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             statement.setString(1, paciente.getDni());
             statement.setString(2, paciente.getNombre());
             statement.setString(3, paciente.getApellido());
-
+            java.util.Date utilDate = paciente.getFechaAlta();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            statement.setDate(4, sqlDate);
             Domicilio domicilio = domicilioDaoH2.guardar(paciente.getDomicilio());
             paciente.getDomicilio().setId(domicilio.getId());
+            statement.setInt(5, paciente.getDomicilio().getId());
             statement.execute();
             connection.commit();
             logger.info("Se guardó el Paciente : " + paciente.getNombre() + paciente.getApellido());
@@ -80,6 +80,10 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             paciente.setDni(resultSet.getString(1));
             paciente.setNombre(resultSet.getString(2));
             paciente.setApellido(resultSet.getString(3));
+            paciente.setFechaAlta(resultSet.getDate(4));
+            String idDomicilio = Integer.toString(resultSet.getInt(5));
+            Domicilio domicilio = domicilioDaoH2.buscar(idDomicilio);
+            paciente.setDomicilio(domicilio);
             return paciente;
         }
         else throw new RuntimeException("No se pudo encontrar el Paciente");
@@ -99,6 +103,10 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             paciente.setDni(resultSet.getString("DNI"));
             paciente.setNombre(resultSet.getString("NOMBRE"));
             paciente.setApellido(resultSet.getString("APELLIDO"));
+            paciente.setFechaAlta(resultSet.getDate("FECHA_ALTA"));
+            String idDomicilio = Integer.toString(resultSet.getInt("DOMICILIO_ID"));
+            Domicilio domicilio = domicilioDaoH2.buscar(idDomicilio);
+            paciente.setDomicilio(domicilio);
             pacienteList.add(paciente);
         }
 

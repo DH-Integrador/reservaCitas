@@ -2,19 +2,21 @@ package com.integrador.ReservaCitas.dto;
 
 import java.util.Date;
 
-public class PacienteDto {
+public class PacienteDtoGet {
     private String nombre;
     private String apellido;
     private String dni;
+    private Date fechaAlta;
     private DomicilioDto domicilio;
 
-    public PacienteDto() {
+    public PacienteDtoGet() {
     }
 
-    public PacienteDto(String nombre, String apellido, String dni, DomicilioDto domicilio) {
+    public PacienteDtoGet(String nombre, String apellido, String dni, Date fechaAlta, DomicilioDto domicilio) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
+        this.fechaAlta = fechaAlta;
         this.domicilio = domicilio;
     }
 
@@ -42,6 +44,14 @@ public class PacienteDto {
         this.dni = dni;
     }
 
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
     public DomicilioDto getDomicilio() {
         return domicilio;
     }
@@ -52,10 +62,11 @@ public class PacienteDto {
 
     @Override
     public String toString() {
-        return "PacienteDto{" +
+        return "PacienteDtoGet{" +
                 "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", dni='" + dni + '\'' +
+                ", fechaAlta=" + fechaAlta +
                 ", domicilio=" + domicilio +
                 '}';
     }

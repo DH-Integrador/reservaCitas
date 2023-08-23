@@ -48,7 +48,13 @@ public class DomicilioService implements IService<Domicilio> {
 
     @Override
     public Domicilio buscar(String id) throws Exception {
-        return null;
+        try {
+            return domicilioIDao.buscar(id);
+        }
+        catch (Exception e) {
+            logger.error("Error al buscar el domicilio con id: " + id, e);
+            throw new RuntimeException("Error al buscar el domicilio con id: " + id, e);
+        }
     }
 
     @Override

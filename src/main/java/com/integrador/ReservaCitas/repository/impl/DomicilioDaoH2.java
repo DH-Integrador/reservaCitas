@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,23 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
 
     @Override
     public Domicilio buscar(String id) throws Exception {
-        return null;
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT_DOMICILIO)){
+            statement.setInt(1, Integer.parseInt(id));
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.last();
+            if(resultSet.getRow()==1){
+                Domicilio domicilio = new Domicilio();
+                domicilio.setCalle(resultSet.getString("calle"));
+                domicilio.setNumero(resultSet.getString("numero"));
+                domicilio.setLocalidad(resultSet.getString("localidad"));
+                domicilio.setProvincia(resultSet.getString("provincia"));
+                return domicilio;
+            }
+            else throw new RuntimeException("No se pudo encontrar un domicilio");
+        } catch(Exception e){
+            logger.error("No se pudo buscar el domicilio con id: " + id, e);
+            throw new RuntimeException("Sucedió un error al buscar", e);
+        }
     }
 
     @Override

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,8 +41,6 @@ public class PacienteController {
     @PostMapping("/register")
     public ResponseEntity<?> guardar(@RequestBody PacienteDto paciente) {
         try{
-            logger.info("Paciente recibido: " + paciente);
-            logger.info(Mapper.map(paciente));
             Paciente pacienteGuardado = pacienteService.guardar(Mapper.map(paciente));
             logger.info("Paciente con Dni: " + pacienteGuardado.getDni() + " guardado correctamente");
             return ResponseEntity.status(HttpStatus.OK).body("Se ha guardado el paciente: "+ pacienteGuardado);

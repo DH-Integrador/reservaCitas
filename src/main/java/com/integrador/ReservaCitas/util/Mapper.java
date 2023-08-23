@@ -2,6 +2,7 @@ package com.integrador.ReservaCitas.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.integrador.ReservaCitas.dto.PacienteDto;
+import com.integrador.ReservaCitas.dto.PacienteDtoGet;
 import com.integrador.ReservaCitas.model.Domicilio;
 import com.integrador.ReservaCitas.model.Paciente;
 
@@ -10,7 +11,7 @@ import org.apache.log4j.Logger;
 public class Mapper {
 
     private static final Logger logger = Logger.getLogger(Mapper.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper = new ObjectMapper();
 
     public static Paciente map(PacienteDto dto){
         Paciente paciente = new Paciente();
