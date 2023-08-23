@@ -66,6 +66,7 @@ public class DomicilioDaoH2 implements IDao<Domicilio> {
             resultSet.last();
             if(resultSet.getRow()==1){
                 Domicilio domicilio = new Domicilio();
+                domicilio.setId(resultSet.getInt("id"));
                 domicilio.setCalle(resultSet.getString("calle"));
                 domicilio.setNumero(resultSet.getString("numero"));
                 domicilio.setLocalidad(resultSet.getString("localidad"));
