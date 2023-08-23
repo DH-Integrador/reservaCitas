@@ -1,24 +1,24 @@
-package com.integrador.ReservaCitas.services.impl;
+package com.integrador.ReservaCitas.repository.impl;
 
-import com.integrador.ReservaCitas.models.Turno;
-import com.integrador.ReservaCitas.services.IService;
+import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.model.Turno;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class TurnoService implements IService<Turno> {
+public class TurnoDaoH2 implements IDao<Turno> {
     @Override
     public Turno guardar(Turno turno) throws Exception {
         return null;
     }
 
     @Override
-    public void eliminar(String id) throws Exception{
+    public void eliminar(String matricula) throws Exception{
 
     }
 
     @Override
-    public Turno buscar(String id) throws Exception {
+    public Turno buscar(String matricula) throws Exception {
         return null;
     }
 

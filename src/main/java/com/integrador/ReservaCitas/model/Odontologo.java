@@ -1,4 +1,4 @@
-package com.integrador.ReservaCitas.models;
+package com.integrador.ReservaCitas.model;
 
 import java.util.Objects;
 

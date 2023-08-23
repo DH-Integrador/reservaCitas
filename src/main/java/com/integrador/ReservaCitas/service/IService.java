@@ -1,4 +1,4 @@
-package com.integrador.ReservaCitas.services;
+package com.integrador.ReservaCitas.service;
 
 import java.sql.SQLException;
 import java.util.List;

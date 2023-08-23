@@ -1,8 +1,8 @@
-package com.integrador.ReservaCitas.services.impl;
+package com.integrador.ReservaCitas.service.impl;
 
-import com.integrador.ReservaCitas.daos.IDao;
-import com.integrador.ReservaCitas.models.Odontologo;
-import com.integrador.ReservaCitas.services.IService;
+import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.model.Odontologo;
+import com.integrador.ReservaCitas.service.IService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

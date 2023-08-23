@@ -1,15 +1,13 @@
-package com.integrador.ReservaCitas.controllers;
+package com.integrador.ReservaCitas.controller;
 
-import com.integrador.ReservaCitas.models.Odontologo;
-import com.integrador.ReservaCitas.services.impl.OdontologoService;
+import com.integrador.ReservaCitas.model.Odontologo;
+import com.integrador.ReservaCitas.service.impl.OdontologoService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("odontologos")

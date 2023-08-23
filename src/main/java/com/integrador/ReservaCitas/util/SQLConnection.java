@@ -1,4 +1,4 @@
-package com.integrador.ReservaCitas.utils;
+package com.integrador.ReservaCitas.util;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +42,9 @@ public class SQLConnection {
 
     public static void createTables() throws SQLException {
         Statement statement = connection.createStatement();
-        statement.execute(SQLQueries.CREATETABLES);
+        statement.execute(SQLQueries.CREATETABLES_ODONTOLOGO);
+        statement.execute(SQLQueries.CREATETABLES_PACIENTE);
+        statement.execute(SQLQueries.CREATETABLES_DOMICILIO);
         statement.close();
     }
 }

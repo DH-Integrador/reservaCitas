@@ -1,12 +1,11 @@
-package com.integrador.ReservaCitas.daos.impl;
+package com.integrador.ReservaCitas.repository.impl;
 
 import com.integrador.ReservaCitas.ReservaCitasApplication;
-import com.integrador.ReservaCitas.models.Odontologo;
-import com.integrador.ReservaCitas.services.impl.OdontologoService;
-import com.integrador.ReservaCitas.utils.SQLConnection;
+import com.integrador.ReservaCitas.model.Odontologo;
+import com.integrador.ReservaCitas.service.impl.OdontologoService;
+import com.integrador.ReservaCitas.util.SQLConnection;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 @SpringBootTest

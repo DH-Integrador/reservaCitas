@@ -1,4 +1,4 @@
-package com.integrador.ReservaCitas.models;
+package com.integrador.ReservaCitas.model;
 
 import java.util.Date;
 import java.util.Objects;
@@ -8,12 +8,12 @@ public class Paciente {
     private String nombre;
     private String apellido;
     private Date fechaAlta;
-    private String domicilio;
+    private Domicilio domicilio;
 
     public Paciente() {
     }
 
-    public Paciente(String dni, String nombre, String apellido, Date fechaAlta, String domicilio) {
+    public Paciente(String dni, String nombre, String apellido, Date fechaAlta, Domicilio domicilio) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -26,7 +26,7 @@ public class Paciente {
     }
 
     public void setDni(String dni) {
-        dni = dni;
+        this.dni = dni;
     }
 
     public String getNombre() {
@@ -53,11 +53,11 @@ public class Paciente {
         this.fechaAlta = fechaAlta;
     }
 
-    public String getDomicilio() {
+    public Domicilio getDomicilio() {
         return domicilio;
     }
 
-    public void setDomicilio(String domicilio) {
+    public void setDomicilio(Domicilio domicilio) {
         this.domicilio = domicilio;
     }
 

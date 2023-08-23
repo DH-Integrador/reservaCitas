@@ -1,10 +1,12 @@
-package com.integrador.ReservaCitas.daos.impl;
+package com.integrador.ReservaCitas.repository.impl;
 
-import com.integrador.ReservaCitas.daos.IDao;
-import com.integrador.ReservaCitas.models.Paciente;
-import com.integrador.ReservaCitas.utils.SQLConnection;
-import com.integrador.ReservaCitas.utils.SQLQueries;
+import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.model.Domicilio;
+import com.integrador.ReservaCitas.model.Paciente;
+import com.integrador.ReservaCitas.util.SQLConnection;
+import com.integrador.ReservaCitas.util.SQLQueries;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +15,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
+@Repository
 public class PacienteDaoH2 implements IDao<Paciente> {
     private PacienteDaoH2 pacienteDaoH2;
     private List<Paciente> pacienteList = new ArrayList<>();
+    private DomicilioDaoH2 domicilioDaoH2 = new DomicilioDaoH2();
     private static final Logger logger = Logger.getLogger(PacienteDaoH2.class);
     private Connection connection;
 
@@ -25,29 +29,31 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public Paciente guardar(Paciente paciente) throws Exception {
-        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERT_CUSTOM)){
-        connection.setAutoCommit(false);
-        statement.setString(1, paciente.getDni());
-        statement.setString(2, paciente.getNombre());
-        statement.setString(3, paciente.getApellido());
-        statement.setString(5, paciente.getDomicilio());
-        statement.execute();
-        connection.commit();
-        logger.info("Se guardó el Paciente : " + paciente.getNombre() + paciente.getApellido());
-    } catch(Exception e){
-        connection.rollback();
-        logger.error("No se pudo persistir: " + paciente, e);
-        throw new RuntimeException("Sucedió un error al persistir", e);
-    } finally {
-        connection.setAutoCommit(true);
-    }
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERTCUSTOM_PACIENTE)){
+            connection.setAutoCommit(false);
+            statement.setString(1, paciente.getDni());
+            statement.setString(2, paciente.getNombre());
+            statement.setString(3, paciente.getApellido());
+
+            Domicilio domicilio = domicilioDaoH2.guardar(paciente.getDomicilio());
+            paciente.getDomicilio().setId(domicilio.getId());
+            statement.execute();
+            connection.commit();
+            logger.info("Se guardó el Paciente : " + paciente.getNombre() + paciente.getApellido());
+        } catch(Exception e){
+            connection.rollback();
+            logger.error("No se pudo persistir: " + paciente, e);
+            throw new RuntimeException("Sucedió un error al persistir", e);
+        } finally {
+            connection.setAutoCommit(true);
+        }
         return paciente;
     }
 
     @Override
     public void eliminar(String Dni) throws Exception{
         try {
-            try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE)) {
+            try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE_PACIENTE)) {
             statement.setString(1, Dni);
             int rowsAffected = statement.executeUpdate();
             if(rowsAffected > 0)
@@ -65,7 +71,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public Paciente buscar(String Dni) throws Exception {
-    try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT)){
+    try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT_PACIENTE)){
         statement.setString(1, Dni);
         ResultSet resultSet = statement.executeQuery();
         resultSet.last();
@@ -85,7 +91,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public List<Paciente> buscarTodos() throws SQLException {
-    try (PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT_ALL)){
+    try (PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECTALL_PACIENTES)){
         ResultSet resultSet = statement.executeQuery();
         pacienteList.clear();
         while(resultSet.next()){
@@ -105,7 +111,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public Paciente actualizar(Paciente paciente) throws Exception {
-    try(PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATE_CUSTOM)){
+    try(PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATECUSTOM_PACIENTE)){
         connection.setAutoCommit(false);
         statement.setString(1, paciente.getDni());
         statement.setString(2, paciente.getNombre());

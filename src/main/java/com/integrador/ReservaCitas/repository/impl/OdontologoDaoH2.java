@@ -1,10 +1,10 @@
-package com.integrador.ReservaCitas.daos.impl;
+package com.integrador.ReservaCitas.repository.impl;
 
-import com.integrador.ReservaCitas.daos.IDao;
-import com.integrador.ReservaCitas.models.Odontologo;
+import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.model.Odontologo;
 
-import com.integrador.ReservaCitas.utils.SQLConnection;
-import com.integrador.ReservaCitas.utils.SQLQueries;
+import com.integrador.ReservaCitas.util.SQLConnection;
+import com.integrador.ReservaCitas.util.SQLQueries;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public Odontologo guardar(Odontologo odontologo) throws Exception {
-        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERT_CUSTOM)){
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.INSERTCUSTOM_ODONTOLOGO)){
             connection.setAutoCommit(false);
             statement.setString(1, odontologo.getMatricula());
             statement.setString(2, odontologo.getNombre());
@@ -48,7 +48,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
     @Override
     public void eliminar(String matricula) throws Exception{
         try {
-            try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE)) {
+            try (PreparedStatement statement = connection.prepareStatement(SQLQueries.DELETE_ODONTOLOGO)) {
                 statement.setString(1, matricula);
                 int rowsAffected = statement.executeUpdate();
                 if(rowsAffected > 0)
@@ -66,7 +66,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public Odontologo buscar(String matricula) throws Exception {
-        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT)){
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT_ODONTOLOGO)){
             statement.setString(1, matricula);
             ResultSet resultSet = statement.executeQuery();
             resultSet.last();
@@ -86,7 +86,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public List<Odontologo> buscarTodos() throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECT_ALL)){
+        try (PreparedStatement statement = connection.prepareStatement(SQLQueries.SELECTALL_ODONTOLOGOS)){
             ResultSet resultSet = statement.executeQuery();
             odontologosRepositorio.clear();
             while(resultSet.next()){
@@ -106,7 +106,7 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
 
     @Override
     public Odontologo actualizar(Odontologo odontologo) throws Exception {
-        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATE_CUSTOM)){
+        try(PreparedStatement statement = connection.prepareStatement(SQLQueries.UPDATECUSTOM_ODONTOLOGO)){
             connection.setAutoCommit(false);
             statement.setString(1, odontologo.getNombre());
             statement.setString(2, odontologo.getMatricula());

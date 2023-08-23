@@ -1,7 +1,9 @@
-package com.integrador.ReservaCitas.controllers;
+package com.integrador.ReservaCitas.controller;
 
-import com.integrador.ReservaCitas.models.Paciente;
-import com.integrador.ReservaCitas.services.impl.PacienteService;
+import com.integrador.ReservaCitas.dto.PacienteDto;
+import com.integrador.ReservaCitas.model.Paciente;
+import com.integrador.ReservaCitas.service.impl.PacienteService;
+import com.integrador.ReservaCitas.util.Mapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,6 @@ public class PacienteController {
     }
     @GetMapping
     public ResponseEntity<?> getPacientes() {
-        List<Paciente> result;
         try {
             List<Paciente> pacientes = pacienteService.buscarTodos();
             if (pacientes.isEmpty()) {
@@ -36,9 +37,11 @@ public class PacienteController {
         }
     }
     @PostMapping("/register")
-    public ResponseEntity<?> guardar(@RequestBody Paciente paciente) {
+    public ResponseEntity<?> guardar(@RequestBody PacienteDto paciente) {
         try{
-            Paciente pacienteGuardado = pacienteService.guardar(paciente);
+            logger.info("Paciente recibido: " + paciente);
+            logger.info(Mapper.map(paciente));
+            Paciente pacienteGuardado = pacienteService.guardar(Mapper.map(paciente));
             logger.info("Paciente con Dni: " + pacienteGuardado.getDni() + " guardado correctamente");
             return ResponseEntity.status(HttpStatus.OK).body("Se ha guardado el paciente: "+ pacienteGuardado);
         }catch(Exception e){
