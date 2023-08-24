@@ -44,7 +44,7 @@ public class Mapper {
         dto.setDni(paciente.getDni());
         dto.setNombre(paciente.getNombre());
         dto.setApellido(paciente.getApellido());
-        dto.setFechaAlta(paciente.getFechaAlta().toString());
+        dto.setFechaAlta(paciente.getFechaAlta());
         dto.setDomicilio(domicilio);
         return dto;
     }

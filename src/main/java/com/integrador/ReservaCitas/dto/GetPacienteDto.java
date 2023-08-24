@@ -1,16 +1,18 @@
 package com.integrador.ReservaCitas.dto;
 
+import java.util.Date;
+
 public class GetPacienteDto {
     private String nombre;
     private String apellido;
     private String dni;
-    private String fechaAlta;
+    private Date fechaAlta;
     private DomicilioDto domicilio;
 
     public GetPacienteDto() {
     }
 
-    public GetPacienteDto(String nombre, String apellido, String dni, String fechaAlta, DomicilioDto domicilio) {
+    public GetPacienteDto(String nombre, String apellido, String dni, Date fechaAlta, DomicilioDto domicilio) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -42,11 +44,11 @@ public class GetPacienteDto {
         this.dni = dni;
     }
 
-    public String getFechaAlta() {
+    public Date getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(String fechaAlta) {
+    public void setFechaAlta(Date fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 

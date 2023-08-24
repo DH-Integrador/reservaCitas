@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -80,8 +82,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             paciente.setDni(resultSet.getString(1));
             paciente.setNombre(resultSet.getString(2));
             paciente.setApellido(resultSet.getString(3));
-            Timestamp timestamp = resultSet.getTimestamp(4);
-            paciente.setFechaAlta(timestamp);
+            paciente.setFechaAlta(resultSet.getDate(4));
             String idDomicilio = Integer.toString(resultSet.getInt(5));
             Domicilio domicilio = domicilioDaoH2.buscar(idDomicilio);
             paciente.setDomicilio(domicilio);
