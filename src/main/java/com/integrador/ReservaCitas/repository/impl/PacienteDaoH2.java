@@ -80,7 +80,8 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             paciente.setDni(resultSet.getString(1));
             paciente.setNombre(resultSet.getString(2));
             paciente.setApellido(resultSet.getString(3));
-            paciente.setFechaAlta(resultSet.getDate(4));
+            Timestamp timestamp = resultSet.getTimestamp(4);
+            paciente.setFechaAlta(timestamp);
             String idDomicilio = Integer.toString(resultSet.getInt(5));
             Domicilio domicilio = domicilioDaoH2.buscar(idDomicilio);
             paciente.setDomicilio(domicilio);

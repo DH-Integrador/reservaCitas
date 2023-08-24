@@ -1,5 +1,8 @@
 package com.integrador.ReservaCitas.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.integrador.ReservaCitas.dto.GetPacienteDto;
 import com.integrador.ReservaCitas.dto.PacienteDto;
 import com.integrador.ReservaCitas.model.Paciente;
 import com.integrador.ReservaCitas.service.impl.PacienteService;
@@ -27,12 +30,15 @@ public class PacienteController {
     @GetMapping
     public ResponseEntity<?> getPacientes() {
         try {
-            List<Paciente> pacientes = pacienteService.buscarTodos();
-            if (pacientes.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            List<GetPacienteDto> pacientesDto = null;
+            pacientesDto = mapper.convertValue(pacienteService.buscarTodos(), new TypeReference<>() {});
+
+            if (pacientesDto.isEmpty()) {
                 logger.error("No se encontraron pacientes");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron pacientes");
             }
-            return ResponseEntity.ok(pacientes);
+            return ResponseEntity.ok(pacientesDto);
         } catch (Exception e) {
             logger.error("Error al buscar todos los pacientes", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener los pacientes");
@@ -53,7 +59,8 @@ public class PacienteController {
     public ResponseEntity<?> getPacienteByDni(@PathVariable String Dni) throws Exception {
         try {
             Paciente pacienteEncontrado = pacienteService.buscar(Dni);
-            return ResponseEntity.ok(pacienteEncontrado);
+            GetPacienteDto pacienteDto = Mapper.map(pacienteEncontrado);
+            return ResponseEntity.ok(pacienteDto);
         } catch (Exception e){
             if (e.getMessage() != null) {
                 logger.error("Error al buscar el Paciente con Dni: " + Dni + e);

@@ -1,6 +1,9 @@
 package com.integrador.ReservaCitas.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.integrador.ReservaCitas.dto.DomicilioDto;
+import com.integrador.ReservaCitas.dto.GetPacienteDto;
 import com.integrador.ReservaCitas.dto.PacienteDto;
 import com.integrador.ReservaCitas.model.Domicilio;
 import com.integrador.ReservaCitas.model.Paciente;
@@ -27,5 +30,22 @@ public class Mapper {
 
         paciente.setDomicilio(domicilio);
         return paciente;
+    }
+
+    public static DomicilioDto map(Domicilio domicilio){
+        DomicilioDto dto = mapper.convertValue(domicilio, DomicilioDto.class);
+        return dto;
+    }
+
+    public static GetPacienteDto map(Paciente paciente){
+        GetPacienteDto dto = new GetPacienteDto();
+        DomicilioDto domicilio = mapper.convertValue(paciente.getDomicilio(), DomicilioDto.class);
+
+        dto.setDni(paciente.getDni());
+        dto.setNombre(paciente.getNombre());
+        dto.setApellido(paciente.getApellido());
+        dto.setFechaAlta(paciente.getFechaAlta().toString());
+        dto.setDomicilio(domicilio);
+        return dto;
     }
 }
