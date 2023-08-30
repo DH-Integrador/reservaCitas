@@ -17,8 +17,8 @@ public class PacienteService implements IService<Paciente> {
     private static final Logger logger = Logger.getLogger(PacienteService.class);
 
     @Autowired
-    public PacienteService(PacienteRespository pacienteIDao) {
-        this.pacienteRespository = pacienteIDao;
+    public PacienteService(PacienteRespository pacienteRespository) {
+        this.pacienteRespository = pacienteRespository;
     }
     @Override
     public Paciente guardar(Paciente paciente) throws DataAccessException {

@@ -1,5 +1,6 @@
 package com.integrador.ReservaCitas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,6 @@ import java.util.List;
 public class Paciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String dni;
 
     @Column(name = "NOMBRE")
@@ -31,5 +31,6 @@ public class Paciente {
     private Domicilio domicilio;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Turno> turnos;
 }

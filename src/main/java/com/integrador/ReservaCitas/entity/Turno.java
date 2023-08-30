@@ -16,11 +16,11 @@ public class Turno {
     private int id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ODONTOLOGO_ID")
+    @JoinColumn(name = "ODONTOLOGO_ID", nullable = false)
     private Odontologo odontologo;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PACIENTE_ID")
+    @JoinColumn(name = "PACIENTE_ID", nullable = false)
     private Paciente paciente;
 
     @Column(name = "FECHA")

@@ -10,34 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
 public class TurnoService implements IService<Turno> {
 
     private final TurnoRepository turnoRepository;
+    private final OdontologoService odontologoService;
+    private final PacienteService pacienteService;
 
     private static final Logger logger = Logger.getLogger(TurnoService.class);
 
     @Autowired
-    public TurnoService(TurnoRepository turnoRepository) {
+    public TurnoService(TurnoRepository turnoRepository, OdontologoService odontologoService, PacienteService pacienteService) {
         this.turnoRepository = turnoRepository;
+        this.odontologoService = odontologoService;
+        this.pacienteService = pacienteService;
     }
     @Override
-    public Turno guardar(Turno turno) throws DataAccessException {
+    public Turno guardar(Turno turno){
         try{
-            Turno turnoGuardado = turnoRepository.save(turno);
-            logger.info("Turno con id " + turno.getId() + " creado correctamente");
-            return turnoGuardado;
-        } catch(DataAccessException e){
-            logger.error("Error al guardar el turno: " + turno, e);
-            throw  new DataAccessException("Error al guardar el turno", e) {};
-        }
-    }
-
-    public Turno guardar(Odontologo odontologo, Paciente paciente, Turno turno){
-        try{
+            Odontologo odontologo = odontologoService.buscar(turno.getOdontologo().getMatricula());
+            Paciente paciente = pacienteService.buscar(turno.getPaciente().getDni());
             turno.setOdontologo(odontologo);
             turno.setPaciente(paciente);
             Turno turnoGuardado = turnoRepository.save(turno);
@@ -52,7 +46,7 @@ public class TurnoService implements IService<Turno> {
     @Override
     public void eliminar(String id) throws DataAccessException{
         try{
-            Long idT = Long.parseLong(id);
+            Integer idT = Integer.parseInt(id);
             turnoRepository.deleteById(idT);
             logger.info("Turno con id " + id + " eliminado correctamente");
         } catch(DataAccessException e){
@@ -64,7 +58,7 @@ public class TurnoService implements IService<Turno> {
     @Override
     public Turno buscar(String id) throws Exception {
         try{
-            Long idT = Long.parseLong(id);
+            Integer idT = Integer.parseInt(id);
             Turno turnoBuscado = turnoRepository.findById(idT).orElse(null);
             if(turnoBuscado == null)
                 throw new DataAccessException("No se encontró el turno con id: " + id) {};

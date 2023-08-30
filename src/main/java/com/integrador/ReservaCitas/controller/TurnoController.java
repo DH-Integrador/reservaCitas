@@ -37,8 +37,8 @@ public class TurnoController {
         }
     }
 
-    @PostMapping("/odontologo/{matricula}/paciente/{dni}/turno")
-    public ResponseEntity<Turno> guardar(@PathVariable String matricula, @PathVariable String dni, @Validated @RequestBody Turno turno){
+    @PostMapping("/register")
+    public ResponseEntity<Turno> guardar(@Validated @RequestBody Turno turno){
         try{
             Turno turnoGuardado = turnoService.guardar(turno);
             logger.info("Turno con id: " + turnoGuardado.getId() + " guardado correctamente");

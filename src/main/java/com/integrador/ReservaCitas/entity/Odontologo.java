@@ -1,5 +1,6 @@
 package com.integrador.ReservaCitas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import java.util.List;
 public class Odontologo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String matricula;
 
     @Column(name = "NOMBRE")
@@ -23,5 +23,6 @@ public class Odontologo {
     private String apellido;
 
     @OneToMany(mappedBy = "odontologo", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Turno> turnos;
 }
