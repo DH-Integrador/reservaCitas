@@ -15,11 +15,11 @@ public class Turno {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ODONTOLOGO_ID", nullable = false)
     private Odontologo odontologo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "PACIENTE_ID", nullable = false)
     private Paciente paciente;
 
