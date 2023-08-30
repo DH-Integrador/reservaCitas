@@ -1,12 +1,11 @@
 package com.integrador.ReservaCitas.util;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.integrador.ReservaCitas.dto.DomicilioDto;
 import com.integrador.ReservaCitas.dto.GetPacienteDto;
 import com.integrador.ReservaCitas.dto.PacienteDto;
-import com.integrador.ReservaCitas.model.Domicilio;
-import com.integrador.ReservaCitas.model.Paciente;
+import com.integrador.ReservaCitas.entity.Paciente;
+import com.integrador.ReservaCitas.entity.Domicilio;
 
 import org.apache.log4j.Logger;
 

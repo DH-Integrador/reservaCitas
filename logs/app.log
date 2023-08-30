@@ -14236,8 +14236,8 @@ Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutio
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.ReservaCitasApplication.main(ReservaCitasApplication.java:19)
 Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Tecno/reserva.mv.db [2.1.214/7]
 	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
@@ -14247,7 +14247,7 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Tecno/r
 	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4082)
 	at org.h2.mvstore.db.Store.<init>(Store.java:136)
 	... 12 more
-2023-08-23 13:54:43 ERROR ReservaCitasApplication:23 - Error al crear las tablas en la base de datos: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "com.integrador.ReservaCitas.model.util.SQLConnection.connection" is null
+2023-08-23 13:54:43 ERROR ReservaCitasApplication:23 - Error al crear las tablas en la base de datos: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "com.integrador.ReservaCitas.entity.util.SQLConnection.connection" is null
 2023-08-23 13:54:47 ERROR SQLConnection:25 - Error al conectar la base de datos
 org.h2.jdbc.JdbcSQLNonTransientConnectionException: La base de datos puede que ya esté siendo utilizada: "C:/Users/Tecno/reserva.mv.db". Soluciones Posibles: cierre todas las otras conexiones; use el modo server
 Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-214]
@@ -14265,8 +14265,8 @@ Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutio
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.OdontologoDaoH2.<init>(OdontologoDaoH2.java:25)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -14344,8 +14344,8 @@ Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutio
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.DomicilioDaoH2.<init>(DomicilioDaoH2.java:26)
 	at com.integrador.ReservaCitas.repository.impl.PacienteDaoH2.<init>(PacienteDaoH2.java:19)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
@@ -14424,8 +14424,8 @@ Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutio
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.PacienteDaoH2.<init>(PacienteDaoH2.java:24)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -14503,8 +14503,8 @@ Database may be already in use: "C:/Users/Tecno/reserva.mv.db". Possible solutio
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.DomicilioDaoH2.<init>(DomicilioDaoH2.java:26)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -14554,8 +14554,8 @@ Unsupported database file version or invalid file header in file "C:/Users/Tecno
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.ReservaCitasApplication.main(ReservaCitasApplication.java:19)
 Caused by: org.h2.mvstore.MVStoreException: The write format 3 is larger than the supported format 2 [2.1.214/5]
 	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
@@ -14565,7 +14565,7 @@ Caused by: org.h2.mvstore.MVStoreException: The write format 3 is larger than th
 	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4082)
 	at org.h2.mvstore.db.Store.<init>(Store.java:136)
 	... 12 more
-2023-08-23 13:56:02 ERROR ReservaCitasApplication:23 - Error al crear las tablas en la base de datos: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "com.integrador.ReservaCitas.model.util.SQLConnection.connection" is null
+2023-08-23 13:56:02 ERROR ReservaCitasApplication:23 - Error al crear las tablas en la base de datos: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "com.integrador.ReservaCitas.entity.util.SQLConnection.connection" is null
 2023-08-23 13:56:06 ERROR SQLConnection:25 - Error al conectar la base de datos
 org.h2.jdbc.JdbcSQLNonTransientConnectionException: Versión del archivo de base de datos no soportada ó encabezado de archivo invalido en archivo "C:/Users/Tecno/reserva.mv.db"
 Unsupported database file version or invalid file header in file "C:/Users/Tecno/reserva.mv.db" [90048-214]
@@ -14583,8 +14583,8 @@ Unsupported database file version or invalid file header in file "C:/Users/Tecno
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.OdontologoDaoH2.<init>(OdontologoDaoH2.java:25)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -14662,8 +14662,8 @@ Unsupported database file version or invalid file header in file "C:/Users/Tecno
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.DomicilioDaoH2.<init>(DomicilioDaoH2.java:26)
 	at com.integrador.ReservaCitas.repository.impl.PacienteDaoH2.<init>(PacienteDaoH2.java:19)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
@@ -14742,8 +14742,8 @@ Unsupported database file version or invalid file header in file "C:/Users/Tecno
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.PacienteDaoH2.<init>(PacienteDaoH2.java:24)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -14821,8 +14821,8 @@ Unsupported database file version or invalid file header in file "C:/Users/Tecno
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.createConnection(SQLConnection.java:21)
-	at com.integrador.ReservaCitas.model.util.SQLConnection.getConnection(SQLConnection.java:32)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.createConnection(SQLConnection.java:21)
+	at com.integrador.ReservaCitas.entity.util.SQLConnection.getConnection(SQLConnection.java:32)
 	at com.integrador.ReservaCitas.repository.impl.DomicilioDaoH2.<init>(DomicilioDaoH2.java:26)
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
@@ -20547,3 +20547,33 @@ Column "FECHAALTA" not found [42122-214]
 	at org.h2.jdbc.JdbcResultSet.getDate(JdbcResultSet.java:478)
 	at com.integrador.ReservaCitas.repository.impl.PacienteDaoH2.buscarTodos(PacienteDaoH2.java:108)
 	... 50 more
+2023-08-23 19:30:16 INFO  SQLConnection:22 - Conexión exitosa con la base de datos
+2023-08-23 19:30:16 INFO  ReservaCitasApplication:21 - Se realizó la creación de tablas en la base de datos
+2023-08-23 19:30:26 INFO  DomicilioDaoH2:42 - Se guardó el domicilio: 1
+2023-08-23 19:30:26 INFO  PacienteDaoH2:44 - Se guardó el Paciente : anaPérez
+2023-08-23 19:30:26 INFO  PacienteService:30 - Paciente con id 0123 creado correctamente
+2023-08-23 19:30:26 INFO  PacienteController:51 - Paciente con Dni: 0123 guardado correctamente
+2023-08-29 11:32:15 INFO  SQLConnection:22 - Conexión exitosa con la base de datos
+2023-08-29 11:32:18 INFO  ReservaCitasApplication:31 - Se realizó la creación de tablas en la base de datos
+2023-08-29 11:32:18 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 123
+2023-08-29 11:32:18 INFO  OdontologoService:30 - Odontólogo con matrícula 123 creado correctamente
+2023-08-29 11:32:18 INFO  OdontologoDaoH2:115 - Se actualizó el odontólogo con matrícula: 123
+2023-08-29 11:32:18 INFO  OdontologoService:78 - Se actualizó el odontólogo con matrícula: 123
+2023-08-29 11:32:19 INFO  ReservaCitasApplication:31 - Se realizó la creación de tablas en la base de datos
+2023-08-29 11:32:19 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 123
+2023-08-29 11:32:19 INFO  OdontologoService:30 - Odontólogo con matrícula 123 creado correctamente
+2023-08-29 11:32:20 INFO  ReservaCitasApplication:31 - Se realizó la creación de tablas en la base de datos
+2023-08-29 11:32:20 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 123
+2023-08-29 11:32:20 INFO  OdontologoService:30 - Odontólogo con matrícula 123 creado correctamente
+2023-08-29 11:32:20 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 456
+2023-08-29 11:32:20 INFO  OdontologoService:30 - Odontólogo con matrícula 456 creado correctamente
+2023-08-29 11:32:20 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 789
+2023-08-29 11:32:20 INFO  OdontologoService:30 - Odontólogo con matrícula 789 creado correctamente
+2023-08-29 11:32:21 INFO  ReservaCitasApplication:31 - Se realizó la creación de tablas en la base de datos
+2023-08-29 11:32:21 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 123
+2023-08-29 11:32:21 INFO  OdontologoService:30 - Odontólogo con matrícula 123 creado correctamente
+2023-08-29 11:32:21 INFO  OdontologoDaoH2:55 - Odontólogo con matrícula 123 eliminado correctamente.
+2023-08-29 11:32:21 INFO  OdontologoService:41 - Odontólogo con matrícula 123 eliminado correctamente
+2023-08-29 11:32:22 INFO  ReservaCitasApplication:31 - Se realizó la creación de tablas en la base de datos
+2023-08-29 11:32:22 INFO  OdontologoDaoH2:37 - Se guardó el odontólogo con matrícula: 123
+2023-08-29 11:32:22 INFO  OdontologoService:30 - Odontólogo con matrícula 123 creado correctamente

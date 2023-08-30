@@ -1,0 +1,9 @@
+package com.integrador.ReservaCitas.repository;
+
+import com.integrador.ReservaCitas.entity.Paciente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PacienteRespository extends JpaRepository<Paciente,String> {
+}
