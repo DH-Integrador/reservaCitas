@@ -1,64 +1,62 @@
 package com.integrador.ReservaCitas.service.impl;
 
-import com.integrador.ReservaCitas.model.Domicilio;
-import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.entity.Domicilio;
+import com.integrador.ReservaCitas.repository.DomicilioRepository;
 import com.integrador.ReservaCitas.service.IService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
 public class DomicilioService implements IService<Domicilio> {
 
-    private IDao<Domicilio> domicilioIDao;
+    private final DomicilioRepository domicilioRepository;
     private static final Logger logger = Logger.getLogger(DomicilioService.class);
 
-    public DomicilioService() {
-    }
-
     @Autowired
-    public DomicilioService(IDao<Domicilio> domicilioIDao) {
-        this.domicilioIDao = domicilioIDao;
+    public DomicilioService(DomicilioRepository domicilioIDao) {
+        this.domicilioRepository = domicilioIDao;
     }
 
     @Override
-    public Domicilio guardar(Domicilio domicilio) throws Exception {
+    public Domicilio guardar(Domicilio domicilio) throws DataAccessException {
         try{
-            Domicilio domicilioGuardado = domicilioIDao.guardar(domicilio);
+            Domicilio domicilioGuardado = domicilioRepository.save(domicilio);
             logger.info("Domicilio con id " + domicilio.getId() + " creado correctamente");
             return domicilioGuardado;
-        } catch(Exception e){
+        } catch(DataAccessException e){
             logger.error("Error al guardar el domicilio: " + domicilio, e);
-            throw  new RuntimeException("Error al guardar el domicilio", e);
+            throw  new DataAccessException("Error al guardar el domicilio", e) {};
         }
     }
 
     @Override
-    public void eliminar(String id) throws Exception {
+    public void eliminar(String id) throws DataAccessException {
 
     }
 
     @Override
-    public Domicilio actualizar(Domicilio domicilio) throws Exception {
+    public Domicilio actualizar(Domicilio domicilio) throws DataAccessException {
         return null;
     }
 
     @Override
-    public Domicilio buscar(String id) throws Exception {
+    public Domicilio buscar(String id) throws DataAccessException {
         try {
-            return domicilioIDao.buscar(id);
+            int idD = Integer.parseInt(id);
+            return domicilioRepository.findById(idD).orElse(null);
         }
-        catch (Exception e) {
+        catch (DataAccessException e) {
             logger.error("Error al buscar el domicilio con id: " + id, e);
             throw new RuntimeException("Error al buscar el domicilio con id: " + id, e);
         }
     }
 
     @Override
-    public List<Domicilio> buscarTodos() throws SQLException {
+    public List<Domicilio> buscarTodos() throws DataAccessException {
         return null;
     }
 }

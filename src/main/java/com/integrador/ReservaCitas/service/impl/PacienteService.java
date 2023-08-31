@@ -1,86 +1,85 @@
 package com.integrador.ReservaCitas.service.impl;
 
-import com.integrador.ReservaCitas.model.Paciente;
-import com.integrador.ReservaCitas.repository.IDao;
+import com.integrador.ReservaCitas.entity.Paciente;
+import com.integrador.ReservaCitas.repository.PacienteRespository;
 import com.integrador.ReservaCitas.service.IService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class PacienteService implements IService<Paciente> {
-    private IDao<Paciente> pacienteIDao;
+    private final PacienteRespository pacienteRespository;
     private static final Logger logger = Logger.getLogger(PacienteService.class);
 
-    public PacienteService() {
-    }
     @Autowired
-    public PacienteService(IDao<Paciente> pacienteIDao) {
-        this.pacienteIDao = pacienteIDao;
+    public PacienteService(PacienteRespository pacienteRespository) {
+        this.pacienteRespository = pacienteRespository;
     }
     @Override
-    public Paciente guardar(Paciente paciente) throws Exception {
+    public Paciente guardar(Paciente paciente) throws DataAccessException {
         try{
             paciente.setFechaAlta(new Date());
-            Paciente pacienteGuardado = pacienteIDao.guardar(paciente);
+            Paciente pacienteGuardado = pacienteRespository.save(paciente);
             logger.info("Paciente con id " + paciente.getDni() + " creado correctamente");
             return pacienteGuardado;
-        } catch(Exception e){
+        } catch(DataAccessException e){
             logger.error("Error al guardar el paciente: " + paciente, e);
-            throw  new RuntimeException("Error al guardar el paciente", e);
+            throw  new DataAccessException("Error al guardar el paciente", e) {};
         }
     }
 
     @Override
-    public void eliminar(String dni) throws Exception{
+    public void eliminar(String dni) throws DataAccessException{
         try{
-            pacienteIDao.eliminar(dni);
+            pacienteRespository.deleteById(dni);
             logger.info("Paciente con id " + dni + " eliminado correctamente");
-        } catch(Exception e){
+        } catch(DataAccessException e){
             logger.error("Error al eliminar el paciente con id: " + dni, e);
-            throw new RuntimeException("Error al eliminar el paciente", e);
+            throw new DataAccessException("Error al eliminar el paciente", e) {};
         }
     }
 
     @Override
-    public Paciente buscar(String dni) throws Exception {
+    public Paciente buscar(String dni) throws DataAccessException {
         try{
-            Paciente pacienteBuscado = pacienteIDao.buscar(dni);
+            Paciente pacienteBuscado = pacienteRespository.findById(dni).orElse(null);
             if(pacienteBuscado == null)
-                throw new RuntimeException("No se encontró el paciente con id: " + dni);
+                throw new DataAccessException("No se encontró el paciente con id: " + dni) {};
             return pacienteBuscado;
-        } catch(Exception e){
+        } catch(DataAccessException e){
             logger.error("No se pudo encontrar el paciente con id: " + dni, e);
-            throw new RuntimeException("Error al buscar el paciente", e);
+            throw new DataAccessException("Error al buscar el paciente", e) {};
         }
     }
 
     @Override
-    public List<Paciente> buscarTodos() throws SQLException {
+    public List<Paciente> buscarTodos() throws DataAccessException {
         try{
-            List<Paciente> pacientes = pacienteIDao.buscarTodos();
+            List<Paciente> pacientes = pacienteRespository.findAll();
             if(pacientes.isEmpty())
-                throw new RuntimeException("No se encontraron pacientes");
+                throw new DataAccessException("No se encontraron pacientes") {
+                };
             return pacientes;
-        } catch(Exception e){
+        } catch(DataAccessException e){
             logger.error("No se pudo encontrar ningún paciente", e);
-            throw new RuntimeException("Error al buscar los pacientes", e);
+            throw new DataAccessException("Error al buscar los pacientes", e) {};
         }
     }
 
     @Override
-    public Paciente actualizar(Paciente paciente) throws Exception {
+    public Paciente actualizar(Paciente paciente) throws DataAccessException {
         try {
-            Paciente pacienteActualizado = pacienteIDao.actualizar(paciente);
+            Paciente pacienteActualizado = pacienteRespository.save(paciente);
             logger.info("Paciente con id " + paciente.getDni() + " actualizado correctamente");
             return pacienteActualizado;
-        } catch (Exception e){
+        } catch (DataAccessException e){
             logger.error("Error al actualizar el paciente con id: " + paciente.getDni(), e);
-            throw new RuntimeException("Error al actualizar el paciente", e);
+            throw new DataAccessException("Error al actualizar el paciente", e) {};
         }
     }
 }
