@@ -14,7 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("odontologos")
@@ -29,12 +31,15 @@ public class OdontologoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Odontologo>> listar() {
+    public ResponseEntity<Object> listar() {
         try {
             List<Odontologo> odontologos = odontologoService.buscarTodos();
             if (odontologos.isEmpty()) {
                 logger.error("No se encontraron odontólogos");
-                return ResponseEntity.notFound().build();
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", "success");
+                response.put("message", "No se encontraron odontólogos");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
             }
             return ResponseEntity.ok(odontologos);
         } catch (DataAccessException e) {
@@ -46,11 +51,14 @@ public class OdontologoController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> guardar(@Validated @RequestBody Odontologo odontologo) {
+    public ResponseEntity<Object> guardar(@Validated @RequestBody Odontologo odontologo) {
         try{
             Odontologo odontologoGuardado = odontologoService.guardar(odontologo);
             logger.info("Odontólogo con matrícula: " + odontologoGuardado.getMatricula() + " guardado correctamente");
-            return ResponseEntity.ok("Se ha guardado el odontólogo: "+ odontologoGuardado);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Se ha guardado el odontólogo: "+ odontologoGuardado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch(DataAccessException e){
             logger.error("Error al guardar el Odontólogo: " + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el odontólogo");
@@ -73,14 +81,17 @@ public class OdontologoController {
     }
 
     @PutMapping("{matricula}")
-    public ResponseEntity<String> actualizar(@PathVariable String matricula, @Validated @RequestBody Odontologo odontologo) throws DataAccessException{
+    public ResponseEntity<Object> actualizar(@PathVariable String matricula, @Validated @RequestBody Odontologo odontologo) throws DataAccessException{
         try {
             Odontologo odontologoExistente = odontologoService.buscar(matricula);
             if(odontologoExistente != null) {
                 odontologo.setMatricula(matricula);
                 Odontologo odontologoActualizado = odontologoService.actualizar(odontologo);
                 logger.info("Odontólogo con matrícula: " + odontologoActualizado.getMatricula() + " actualizado correctamente");
-                return ResponseEntity.ok("Se ha actualizado el odontólogo: "+ odontologoActualizado);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", "success");
+                response.put("message", "Se ha actualizado el odontólogo: "+ odontologoActualizado);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
             } else {
                 logger.error("No se encontró el Odontólogo con la matrícula: " + matricula);
                 return ResponseEntity.notFound().build();
@@ -94,11 +105,14 @@ public class OdontologoController {
     }
 
     @DeleteMapping("{matricula}")
-    public ResponseEntity<String> eliminar(@PathVariable String matricula) throws DataAccessException{
+    public ResponseEntity<Object> eliminar(@PathVariable String matricula) throws DataAccessException{
         try{
             odontologoService.eliminar(matricula);
             logger.info("Odontólogo con matrícula " + matricula + " eliminado correctamente");
-            return ResponseEntity.ok("Odontólogo con matrícula " + matricula + " eliminado correctamente");
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Se ha eliminado el odontólogo con matrícula: "+ matricula);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (EmptyResultDataAccessException e) {
             logger.error("No se encontró el Odontólogo con matrícula: " + matricula, e);
             return ResponseEntity.notFound().build();
