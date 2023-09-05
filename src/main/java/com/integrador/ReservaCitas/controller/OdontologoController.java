@@ -1,7 +1,6 @@
 package com.integrador.ReservaCitas.controller;
 
 import com.integrador.ReservaCitas.entity.Odontologo;
-import com.integrador.ReservaCitas.entity.Turno;
 import com.integrador.ReservaCitas.service.IService;
 import com.integrador.ReservaCitas.service.impl.OdontologoService;
 import org.apache.log4j.Logger;

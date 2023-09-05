@@ -1,7 +1,5 @@
 package com.integrador.ReservaCitas.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.integrador.ReservaCitas.dto.GetPacienteDto;
 import com.integrador.ReservaCitas.dto.PacienteDto;
 import com.integrador.ReservaCitas.entity.Paciente;
@@ -18,7 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("pacientes")
@@ -32,17 +32,17 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
     @GetMapping
-    public ResponseEntity<List<GetPacienteDto>> listar() {
+    public ResponseEntity<Object> listar() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<GetPacienteDto> pacientesDto = null;
-            pacientesDto = mapper.convertValue(pacienteService.buscarTodos(), new TypeReference<>() {});
-
-            if (pacientesDto.isEmpty()) {
-                logger.error("No se encontraron pacientes");
-                return ResponseEntity.notFound().build();
+           List<Paciente> pacientes = pacienteService.buscarTodos();
+           if (pacientes.isEmpty()){
+               logger.error("No se encontraron pacientes");
+               Map<String, Object> response = new HashMap<>();
+               response.put("status","success");
+               response.put("message", "No se encontaron pacientes");
+               return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
             }
-            return ResponseEntity.ok(pacientesDto);
+            return ResponseEntity.ok(pacientes);
         } catch (DataAccessException e) {
             logger.error("Error al buscar todos los pacientes", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -51,11 +51,14 @@ public class PacienteController {
         }
     }
     @PostMapping("/register")
-    public ResponseEntity<String> guardar(@Validated  @RequestBody PacienteDto paciente) {
+    public ResponseEntity<Object> guardar(@Validated  @RequestBody Paciente paciente) {
         try{
-            Paciente pacienteGuardado = pacienteService.guardar(Mapper.map(paciente));
+            Paciente pacienteGuardado = pacienteService.guardar(paciente);
             logger.info("Paciente con Dni: " + pacienteGuardado.getDni() + " guardado correctamente");
-            return ResponseEntity.ok("Se ha guardado el paciente: "+ pacienteGuardado);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Se ha guardado el paciente: "+ pacienteGuardado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch(DataAccessException e){
             logger.error("Error al guardar el Paciente: " + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el paciente");
@@ -64,11 +67,10 @@ public class PacienteController {
         }
     }
     @GetMapping("{Dni}")
-    public ResponseEntity<GetPacienteDto> obtenerPorDni(@PathVariable String Dni) throws DataAccessException {
+    public ResponseEntity<Paciente> obtenerPorDni(@PathVariable String Dni) throws DataAccessException {
         try {
             Paciente pacienteEncontrado = pacienteService.buscar(Dni);
-            GetPacienteDto pacienteDto = Mapper.map(pacienteEncontrado);
-            return ResponseEntity.ok(pacienteDto);
+            return ResponseEntity.ok(pacienteEncontrado);
         } catch (DataAccessException e){
             logger.error("Error al buscar el Paciente con Dni: " + Dni + e);
             return ResponseEntity.notFound().build();
@@ -77,14 +79,17 @@ public class PacienteController {
         }
     }
     @PutMapping("{Dni}")
-    public ResponseEntity<String> actualizar(@PathVariable String Dni, @Validated @RequestBody Paciente paciente) throws DataAccessException{
+    public ResponseEntity<Object> actualizar(@PathVariable String Dni, @Validated @RequestBody Paciente paciente) throws DataAccessException{
         try {
             Paciente pacienteExistente = pacienteService.buscar(Dni);
             if(pacienteExistente != null) {
                 paciente.setDni(Dni);
                 Paciente pacienteActualizado = pacienteService.actualizar(paciente);
                 logger.info("Paciente con Dni: " + pacienteActualizado.getDni() + " actualizado correctamente");
-                return ResponseEntity.ok("Se ha actualizado el paciente: "+ pacienteActualizado);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", "success");
+                response.put("message", "Se ha actualizado el paciente: "+ pacienteActualizado);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
             } else {
                 logger.error("No se encontró el Paciente con Dni: " + Dni);
                 return ResponseEntity.notFound().build();
@@ -97,11 +102,14 @@ public class PacienteController {
         }
     }
     @DeleteMapping("{Dni}")
-    public ResponseEntity<String> eliminar(@PathVariable String Dni) throws DataAccessException{
+    public ResponseEntity<Object> eliminar(@PathVariable String Dni) throws DataAccessException{
         try{
             pacienteService.eliminar(Dni);
             logger.info("Paciente con Dni " + Dni + " eliminado correctamente");
-            return ResponseEntity.ok("Paciente con Dni " + Dni + " eliminado correctamente");
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Se ha eliminado el paciente con Dni: "+ Dni);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (EmptyResultDataAccessException e) {
                 logger.error("Error al eliminar el Paciente con Dni: " + Dni + e);
                 return ResponseEntity.notFound().build();
