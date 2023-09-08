@@ -8,6 +8,8 @@ import com.integrador.ReservaCitas.entity.Paciente;
 import com.integrador.ReservaCitas.service.IService;
 import com.integrador.ReservaCitas.service.impl.PacienteService;
 import com.integrador.ReservaCitas.util.Mapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -22,94 +24,70 @@ import java.util.List;
 
 @RestController
 @RequestMapping("pacientes")
+@Log4j2
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class PacienteController {
 
     private final IService<Paciente> pacienteService;
-    private static final Logger logger = Logger.getLogger(PacienteController.class);
-
-    @Autowired
-    public PacienteController(PacienteService pacienteService) {
-        this.pacienteService = pacienteService;
-    }
+    private final ObjectMapper mapper;
     @GetMapping
     public ResponseEntity<List<GetPacienteDto>> listar() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<GetPacienteDto> pacientesDto = null;
-            pacientesDto = mapper.convertValue(pacienteService.buscarTodos(), new TypeReference<>() {});
-
-            if (pacientesDto.isEmpty()) {
-                logger.error("No se encontraron pacientes");
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(pacientesDto);
-        } catch (DataAccessException e) {
-            logger.error("Error al buscar todos los pacientes", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        log.info("Me llego: listar pacientes  ");
+        List<GetPacienteDto> response;
+        try{
+            List<Paciente> pacientes = pacienteService.buscarTodos();
+            response = mapper.convertValue(pacientes, new TypeReference<>() {
+            });
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(EmptyResultDataAccessException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     @PostMapping("/register")
-    public ResponseEntity<String> guardar(@Validated  @RequestBody PacienteDto paciente) {
+    public ResponseEntity<PacienteDto> guardar(@Validated  @RequestBody PacienteDto paciente) {
+        log.info("Me llego: " + paciente);
+        Paciente response;
         try{
-            Paciente pacienteGuardado = pacienteService.guardar(Mapper.map(paciente));
-            logger.info("Paciente con Dni: " + pacienteGuardado.getDni() + " guardado correctamente");
-            return ResponseEntity.ok("Se ha guardado el paciente: "+ pacienteGuardado);
+            response = pacienteService.guardar(mapper.convertValue(paciente, Paciente.class));
+            return new ResponseEntity<>(mapper.convertValue(response, PacienteDto.class), HttpStatus.CREATED);
         }catch(DataAccessException e){
-            logger.error("Error al guardar el Paciente: " + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el paciente");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("{Dni}")
-    public ResponseEntity<GetPacienteDto> obtenerPorDni(@PathVariable String Dni) throws DataAccessException {
-        try {
-            Paciente pacienteEncontrado = pacienteService.buscar(Dni);
-            GetPacienteDto pacienteDto = Mapper.map(pacienteEncontrado);
-            return ResponseEntity.ok(pacienteDto);
-        } catch (DataAccessException e){
-            logger.error("Error al buscar el Paciente con Dni: " + Dni + e);
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public ResponseEntity<GetPacienteDto> obtenerPorDni(@PathVariable String Dni){
+        log.info("Me llego: obtener paciente por Dni  " + Dni);
+        GetPacienteDto response;
+        try{
+            response = mapper.convertValue(pacienteService.buscar(Dni), GetPacienteDto.class);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(EmptyResultDataAccessException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     @PutMapping("{Dni}")
-    public ResponseEntity<String> actualizar(@PathVariable String Dni, @Validated @RequestBody Paciente paciente) throws DataAccessException{
-        try {
-            Paciente pacienteExistente = pacienteService.buscar(Dni);
-            if(pacienteExistente != null) {
-                paciente.setDni(Dni);
-                Paciente pacienteActualizado = pacienteService.actualizar(paciente);
-                logger.info("Paciente con Dni: " + pacienteActualizado.getDni() + " actualizado correctamente");
-                return ResponseEntity.ok("Se ha actualizado el paciente: "+ pacienteActualizado);
-            } else {
-                logger.error("No se encontró el Paciente con Dni: " + Dni);
-                return ResponseEntity.notFound().build();
-            }
-        } catch (DataAccessException e){
-            logger.error("Error al actualizar el Paciente: " + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el paciente");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public ResponseEntity<String> actualizar(@PathVariable String Dni, @Validated @RequestBody Paciente paciente){
+        log.info("Me llego: actualizar paciente por Dni  " + Dni);
+        Paciente response;
+        try{
+            response = pacienteService.buscar(Dni);
+            paciente.setFechaAlta(response.getFechaAlta());
+            pacienteService.actualizar(paciente);
+            return new ResponseEntity<>("Paciente actualizado correctamente", HttpStatus.OK);
+        }catch(EmptyResultDataAccessException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     @DeleteMapping("{Dni}")
-    public ResponseEntity<String> eliminar(@PathVariable String Dni) throws DataAccessException{
+    public ResponseEntity<String> eliminar(@PathVariable String Dni){
+        log.info("Me llego: eliminar paciente por Dni  " + Dni);
+        Paciente response;
         try{
-            pacienteService.eliminar(Dni);
-            logger.info("Paciente con Dni " + Dni + " eliminado correctamente");
-            return ResponseEntity.ok("Paciente con Dni " + Dni + " eliminado correctamente");
-        } catch (EmptyResultDataAccessException e) {
-                logger.error("Error al eliminar el Paciente con Dni: " + Dni + e);
-                return ResponseEntity.notFound().build();
-        } catch (DataAccessException e) {
-                logger.error("Error al eliminar el Paciente con Dni: " + Dni, e);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el Paciente");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            response = pacienteService.buscar(Dni);
+            pacienteService.eliminar(response.getDni());
+            return new ResponseEntity<>("Paciente eliminado correctamente", HttpStatus.OK);
+        }catch(EmptyResultDataAccessException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

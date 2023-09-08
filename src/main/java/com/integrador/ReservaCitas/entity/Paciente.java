@@ -24,7 +24,7 @@ public class Paciente {
     private String apellido;
 
     @Column(name = "FECHA_ALTA")
-    private Date fechaAlta;
+    private String fechaAlta;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "DOMICILIO_ID", referencedColumnName = "ID")

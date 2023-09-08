@@ -27,5 +27,5 @@ public class Turno {
     private Date fecha;
 
     @Column(name = "HORA")
-    private int hora;
+    private String hora;
 }
