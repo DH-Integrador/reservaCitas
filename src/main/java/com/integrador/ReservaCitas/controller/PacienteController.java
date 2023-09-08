@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.integrador.ReservaCitas.dto.GetPacienteDto;
 import com.integrador.ReservaCitas.dto.PacienteDto;
+import com.integrador.ReservaCitas.entity.Domicilio;
 import com.integrador.ReservaCitas.entity.Paciente;
 import com.integrador.ReservaCitas.service.IService;
 import com.integrador.ReservaCitas.service.impl.PacienteService;
@@ -29,6 +30,7 @@ import java.util.List;
 public class PacienteController {
 
     private final IService<Paciente> pacienteService;
+    private final IService<Domicilio> domicilioService;
     private final ObjectMapper mapper;
     @GetMapping
     public ResponseEntity<List<GetPacienteDto>> listar() {
@@ -72,6 +74,10 @@ public class PacienteController {
         try{
             response = pacienteService.buscar(Dni);
             paciente.setFechaAlta(response.getFechaAlta());
+            Domicilio domicilio = paciente.getDomicilio();
+            domicilio.setId(response.getDomicilio().getId());
+            Domicilio domicilioActualizado = domicilioService.actualizar(domicilio);
+            paciente.setDomicilio(domicilioActualizado);
             pacienteService.actualizar(paciente);
             return new ResponseEntity<>("Paciente actualizado correctamente", HttpStatus.OK);
         }catch(EmptyResultDataAccessException e){
