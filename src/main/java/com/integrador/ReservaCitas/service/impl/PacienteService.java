@@ -4,6 +4,7 @@ import com.integrador.ReservaCitas.entity.Paciente;
 import com.integrador.ReservaCitas.repository.PacienteRespository;
 import com.integrador.ReservaCitas.service.IService;
 import com.integrador.ReservaCitas.util.ResourceNotFoundException;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.log4j.Logger;
