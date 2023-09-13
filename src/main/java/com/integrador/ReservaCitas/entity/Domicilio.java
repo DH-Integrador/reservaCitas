@@ -1,17 +1,19 @@
 package com.integrador.ReservaCitas.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Entity
-@Table(name = "TABLA_DOMICILIOS")
 @Getter
 @Setter
 public class Domicilio {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "CALLE")

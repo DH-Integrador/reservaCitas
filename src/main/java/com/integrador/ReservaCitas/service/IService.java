@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IService<T> {
-    public abstract T guardar(T t) throws Exception;
-    public abstract void eliminar(String id) throws Exception;
-    public abstract T actualizar(T t) throws Exception;
-    public abstract T buscar(String id) throws Exception;
-    public abstract List<T> buscarTodos() throws SQLException;
+    public abstract T guardar(T t);
+    public abstract void eliminar(String id);
+    public abstract T actualizar(T t);
+    public abstract T buscar(String id);
+    public abstract List<T> buscarTodos();
 }

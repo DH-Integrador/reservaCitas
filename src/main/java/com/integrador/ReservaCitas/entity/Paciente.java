@@ -1,15 +1,16 @@
 package com.integrador.ReservaCitas.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
-@Table(name = "TABLA_PACIENTES")
 @Getter
 @Setter
 public class Paciente {
@@ -24,7 +25,7 @@ public class Paciente {
     private String apellido;
 
     @Column(name = "FECHA_ALTA")
-    private Date fechaAlta;
+    private String fechaAlta;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "DOMICILIO_ID", referencedColumnName = "ID")

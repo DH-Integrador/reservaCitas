@@ -6,13 +6,13 @@ public class GetPacienteDto {
     private String nombre;
     private String apellido;
     private String dni;
-    private Date fechaAlta;
+    private String fechaAlta;
     private DomicilioDto domicilio;
 
     public GetPacienteDto() {
     }
 
-    public GetPacienteDto(String nombre, String apellido, String dni, Date fechaAlta, DomicilioDto domicilio) {
+    public GetPacienteDto(String nombre, String apellido, String dni, String fechaAlta, DomicilioDto domicilio) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -44,11 +44,11 @@ public class GetPacienteDto {
         this.dni = dni;
     }
 
-    public Date getFechaAlta() {
+    public String getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(Date fechaAlta) {
+    public void setFechaAlta(String fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 

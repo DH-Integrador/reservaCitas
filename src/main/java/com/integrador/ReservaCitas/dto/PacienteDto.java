@@ -1,7 +1,5 @@
 package com.integrador.ReservaCitas.dto;
 
-import java.util.Date;
-
 public class PacienteDto {
     private String nombre;
     private String apellido;
