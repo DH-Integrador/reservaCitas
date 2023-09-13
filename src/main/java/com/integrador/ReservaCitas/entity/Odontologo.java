@@ -1,14 +1,15 @@
 package com.integrador.ReservaCitas.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
+@Data
 @Entity
-@Table(name = "TABLA_ODONTOLOGOS")
 @Getter
 @Setter
 public class Odontologo {
@@ -21,6 +22,7 @@ public class Odontologo {
 
     @Column(name = "APELLIDO")
     private String apellido;
+
 
     @OneToMany(mappedBy = "odontologo", cascade = CascadeType.ALL)
     @JsonIgnore

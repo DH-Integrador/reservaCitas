@@ -1,19 +1,20 @@
 package com.integrador.ReservaCitas.entity;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import lombok.Data;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Date;
 
+@Data
 @Entity
-@Table(name = "TABLA_TURNOS")
 @Getter
 @Setter
 public class Turno {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @ManyToOne
